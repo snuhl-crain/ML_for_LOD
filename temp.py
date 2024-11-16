@@ -82,19 +82,20 @@ feat_imp_df = pd.DataFrame(feat_imp_dict)
 # caculate shap value
 
 import shap
-shap_models=['lightgbm','xgboost','gbc']
+
+shap_models=['gbc']
 shap.initjs()
 for i in shap_models:
     print(i)
-    explainer = shap.TreeExplainer(globals()['tuned_{}'.format(str(i))].named_steps['actual_estimator'])
+    explainer = shap.TreeExplainer(globals()['tuned_{}'.format(str(i))].named_steps['trained_model'])
     shap_values = explainer.shap_values(train_data.iloc[:, :-1])
     shap.summary_plot(shap_values, train_data.iloc[:, :-1])
 
-shap_models=['rf','et']
+shap_models=['rf']
 shap.initjs()
 for i in shap_models:
     print(i)
-    explainer = shap.TreeExplainer(globals()['tuned_{}'.format(str(i))].named_steps['actual_estimator'])
+    explainer = shap.TreeExplainer(globals()['tuned_{}'.format(str(i))].named_steps['trained_model'])
     shap_values = explainer.shap_values(train_data.iloc[:, :-1])
     shap_values = shap_values[:, :, 1]
     shap.summary_plot(shap_values, train_data.iloc[:, :-1])
